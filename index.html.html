@@ -1,0 +1,1269 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calculadora FBA Amazon</title>
+  <style>
+    :root {
+      --bg: #f4f8fc;
+      --panel: #f8fbff;
+      --text: #172033;
+      --muted: #607085;
+      --line: #b0c4de;
+      --accent: #0f7c80;
+      --accent-dark: #0a5f63;
+      --good: #127a46;
+      --warn: #a86200;
+      --bad: #b42318;
+      --soft: #eef6ff;
+      --card-bg: #ffffff;
+      --shadow: 0 18px 45px rgba(23, 32, 51, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.45;
+    }
+
+    main {
+      width: min(1440px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 32px 0 42px;
+    }
+
+    .top {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: end;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      max-width: 780px;
+    }
+
+    .header-actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      background: #dff4ef;
+      border: 1px solid #a9ddd3;
+      color: #075f51;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .layout > section:last-child {
+      position: sticky;
+      top: 16px;
+      max-height: calc(100vh - 32px);
+      overflow: auto;
+    }
+
+    .layout > section:last-child .cards {
+      grid-template-columns: 1fr;
+    }
+
+    section,
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .section-header {
+      padding: 22px 24px 0;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 1.15rem;
+    }
+
+    h3 {
+      margin: 0 0 12px;
+      font-size: 1rem;
+    }
+
+    .section-note {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    form {
+      padding: 22px 24px 24px;
+    }
+
+    .form-block {
+      border-top: 1px solid #c3d3e8;
+      padding-top: 20px;
+      margin-top: 22px;
+    }
+
+    .form-block:first-child {
+      border-top: 0;
+      padding-top: 0;
+      margin-top: 0;
+    }
+
+    #productsContainer {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(430px, 1fr));
+      gap: 32px;
+      align-items: start;
+    }
+
+    .product-block {
+      border: 1px solid #9fb6d8;
+      border-radius: 16px;
+      padding: 24px;
+      background: #f8fbff;
+      box-shadow: 0 16px 36px rgba(23, 32, 51, 0.10);
+      min-width: 0;
+    }
+
+    .product-result {
+      border: 1px solid #a7bddb;
+      border-radius: 14px;
+      padding: 22px;
+      margin-top: 24px;
+      background: #ffffff;
+    }
+
+    .product-result:first-child {
+      border-top: 0;
+      padding-top: 0;
+      margin-top: 0;
+    }
+
+    .product-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #c3d3e8;
+      padding-bottom: 14px;
+    }
+
+    .product-title h3 {
+      margin: 0;
+      font-size: 1.08rem;
+      color: #12243d;
+    }
+
+    .remove-product {
+      background: #fff0ee;
+      color: var(--bad);
+      border: 1px solid #f3b7b1;
+    }
+
+    details {
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+      margin-top: 12px;
+    }
+
+    details:first-of-type {
+      border-top: 0;
+      padding-top: 0;
+      margin-top: 0;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      min-width: 0;
+    }
+
+    .field.full { grid-column: 1 / -1; }
+
+    label {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #263347;
+    }
+
+    input,
+    select {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid #c9d4e2;
+      border-radius: 8px;
+      background: var(--card-bg);
+      color: var(--text);
+      padding: 10px 11px;
+      font: inherit;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(15, 124, 128, 0.16);
+      outline: none;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    button {
+      min-height: 42px;
+      border: 0;
+      border-radius: 8px;
+      padding: 10px 16px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .primary {
+      background: var(--accent);
+      color: #ffffff;
+    }
+
+    .primary:hover { background: var(--accent-dark); }
+
+    .secondary {
+      background: #e6edf5;
+      color: #263347;
+    }
+
+    .results {
+      padding: 22px 24px 24px;
+    }
+
+    .result-group {
+      margin-bottom: 18px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      border: 1px solid #b0c4de;
+      border-radius: 14px;
+      padding: 16px;
+      background: var(--card-bg);
+      min-height: 116px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+      min-width: 0;
+      overflow: visible;
+    }
+
+    .card strong {
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.25;
+      text-transform: uppercase;
+    }
+
+    .value {
+      margin-top: 0;
+      font-size: clamp(1.05rem, 1.45vw, 1.45rem);
+      font-weight: 800;
+      line-height: 1.15;
+      overflow-wrap: normal;
+      word-break: normal;
+      white-space: nowrap;
+    }
+
+    .status {
+      grid-column: 1 / -1;
+      border-color: #b8d8d3;
+      background: var(--soft);
+    }
+
+    .good { color: var(--good); }
+    .warn { color: var(--warn); }
+    .bad { color: var(--bad); }
+
+    .alerts {
+      display: grid;
+      gap: 10px;
+    }
+
+    .alert {
+      border-radius: 8px;
+      padding: 11px 12px;
+      border: 1px solid;
+      font-size: 0.92rem;
+    }
+
+    .alert.good {
+      background: #e8f6ee;
+      border-color: #b6dec6;
+      color: var(--good);
+    }
+
+    .alert.warn {
+      background: #fff4df;
+      border-color: #f0cf95;
+      color: #7b4b00;
+    }
+
+    .alert.bad {
+      background: #fff0ee;
+      border-color: #f3b7b1;
+      color: var(--bad);
+    }
+
+    .summary {
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .result-note {
+      margin: -4px 0 12px;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .featured-results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .featured-metric {
+      border: 1px solid #7fa6cf;
+      background: var(--soft);
+      border-radius: 14px;
+      padding: 18px;
+      min-width: 0;
+    }
+
+    .featured-metric strong {
+      display: block;
+      margin-top: 10px;
+      font-size: clamp(1.28rem, 1.9vw, 1.75rem);
+      line-height: 1.12;
+      white-space: nowrap;
+    }
+
+    .featured-metric span,
+    .decision-label {
+      display: block;
+      color: var(--muted);
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .decision {
+      margin-top: 12px;
+      border: 1px solid #b0c4de;
+      border-radius: 14px;
+      padding: 14px;
+      background: #f8fbff;
+    }
+
+    .decision p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .product-result .cards {
+      margin-bottom: 16px;
+    }
+
+    .product-result .alerts {
+      margin-top: 16px;
+    }
+
+    .product-result .value {
+      font-size: clamp(1rem, 1.25vw, 1.3rem);
+    }
+
+    @media (max-width: 980px) {
+      .top,
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .layout > section:last-child {
+        position: static;
+        max-height: none;
+      }
+
+      .badge { width: fit-content; }
+
+      .header-actions {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 620px) {
+      main {
+        width: min(100% - 20px, 1240px);
+        padding-top: 18px;
+      }
+
+      .grid,
+      .cards,
+      .featured-results,
+      #productsContainer {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="top">
+      <div>
+        <h1>Calculadora FBA Amazon - Análise de Viabilidade</h1>
+        <p class="subtitle">Compare produtos lado a lado, estime custos FBA, margem, ROI e preço sugerido com base na lógica mapeada da planilha.</p>
+      </div>
+      <div class="header-actions">
+        <button class="secondary" type="button" id="headerAddProductButton">Adicionar produto</button>
+        <button class="primary" type="button" id="headerCalculateButton">Calcular todos</button>
+        <div class="badge" id="overallStatus">Plano Amazon: R$ 0,00 nesta versão</div>
+      </div>
+    </div>
+
+    <div class="layout">
+      <section>
+        <div class="section-header">
+          <h2>Produtos analisados</h2>
+          <p class="section-note">Campos percentuais aceitam 12 ou 12%. Valores opcionais em branco são considerados zero, exceto campos manuais opcionais que substituem cálculos automáticos.</p>
+        </div>
+
+                <form id="calculatorForm">
+          <div class="form-block">
+            <h3>1. Dados gerais da operação</h3>
+            <div class="grid">
+              <div class="field">
+                <label for="monthlyFixedCosts">Custos fixos mensais</label>
+                <input id="monthlyFixedCosts" type="text" inputmode="decimal">
+                <span class="hint">Valor global da operação. Não entra automaticamente no custo unitário dos produtos.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-block">
+            <h3>2. Produtos</h3>
+            <div id="productsContainer"></div>
+          </div>
+
+          <div class="actions">
+            <button class="primary" type="submit">Calcular</button>
+            <button class="secondary" type="button" id="addProductButton">Adicionar produto</button>
+            <button class="secondary" type="button" id="resetButton">Restaurar exemplo da planilha</button>
+          </div>
+        </form>
+      </section>
+
+      <section>
+        <div class="section-header">
+          <h2>Resumo global da operação</h2>
+          <p class="section-note">Somente totais consolidados. Os resultados individuais aparecem dentro de cada produto analisado.</p>
+        </div>
+
+                <div class="results">
+          <div class="result-group">
+            <h3>Resumo global da operação</h3>
+            <p class="result-note">O ponto de equilíbrio mensal global considera o mix de produtos informado e usa o lucro médio ponderado por unidade.</p>
+            <div class="cards">
+              <div class="card"><strong>Faturamento total projetado</strong><div class="value" id="globalRevenue">R$ 0,00</div></div>
+              <div class="card"><strong>Investimento total estoque</strong><div class="value" id="globalStockInvestment">R$ 0,00</div></div>
+              <div class="card"><strong>Lucro total projetado</strong><div class="value" id="globalProjectedProfit">R$ 0,00</div></div>
+              <div class="card"><strong>Custos fixos mensais</strong><div class="value" id="globalFixedCosts">R$ 0,00</div></div>
+              <div class="card"><strong>Lucro total após fixos</strong><div class="value" id="globalProfitAfterFixed">R$ 0,00</div></div>
+              <div class="card"><strong>Ponto de equilíbrio mensal global</strong><div class="value" id="globalBreakEven">Não aplicável</div></div>
+              <div class="card"><strong>Total de unidades</strong><div class="value" id="globalQuantityTotal">0</div></div>
+              <div class="card"><strong>SKUs analisados</strong><div class="value" id="globalSkuCount">0</div></div>
+              <div class="card status"><strong>Status geral</strong><div class="value" id="globalStatus">Aguardando</div></div>
+            </div>
+          </div>
+
+          <div class="result-group" hidden>
+            <div id="individualResults"></div>
+          </div>
+
+          <div class="summary" id="summary"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const TARIFAS_LOGISTICA = [["0 - 100g",0,0.1,0,0,0,10.05,12.05,14.05,15.05,15.55],["100 - 200g",0.1,0.2,0,0,0,10.45,12.45,14.45,15.45,16.05],["200 - 300g",0.2,0.3,0,0,0,10.95,12.95,14.95,15.95,16.55],["300 - 400g",0.3,0.4,0,0,0,11.45,13.45,15.45,16.95,17.15],["400 - 500g",0.4,0.5,0,0,0,11.95,13.95,15.95,17.05,17.85],["500 - 750g",0.5,0.75,0,0,0,12.05,14.05,16.05,18.45,18.55],["750g - 1kg",0.75,1,0,0,0,12.45,14.45,16.45,19.05,19.25],["1kg - 1,5kg",1,1.5,5.65,5.85,6.05,12.95,14.95,16.95,19.45,20.35],["1,5kg - 2kg",1.5,2,0,0,0,13.05,15.05,17.05,19.95,21.35],["2kg - 3kg",2,3,0,0,0,14.05,16.05,18.05,20.05,22.35],["3kg - 4kg",3,4,0,0,0,15.05,17.05,19.05,21.95,23.35],["4kg - 5kg",4,5,0,0,0,16.05,18.05,20.05,22.95,24.35],["5kg - 6kg",5,6,0,0,0,24.05,27.05,29.05,30.05,30.35],["6kg - 7kg",6,7,0,0,0,25.05,28.05,30.05,31.05,33.35],["7kg - 8kg",7,8,0,0,0,26.05,29.05,31.05,32.05,35.35],["8kg - 9kg",8,9,0,0,0,27.05,30.05,32.05,33.05,37.35],["9kg - 10kg",9,10,0,0,0,35.05,40.05,46.05,51.05,51.35],["Kg adicional",10,22,null,null,null,3.05,3.05,3.05,3.5,3.5]];
+    const TARIFAS_REMOCAO = [["0 a 250 g",0,0.25,0.99],["250 a 500 g",0.25,0.5,1.04],["500 g a 1 kg",0.5,1,1.12],["1 kg a 2 kg",1,2,1.26],["2 kg a 3 kg",2,3,1.76],["3 kg a 4 kg",3,4,1.9],["4 kg a 5 kg",4,5,2],["5 kg a 6 kg",5,6,2.2],["6 kg a 7 kg",6,7,2.4],["7 kg a 8 kg",7,8,2.6],["8 kg a 9 kg",8,9,3],["9 kg a 10 kg",9,10,3.6],["Kg adicional",10,22,0.17]];
+    const COLETA_FBA = [["SP","Até 3 kg",0,3,0.93,2.92,1.925],["SP",">3 kg a 6 kg",3,6,1.1,3.84,2.47],["SP",">6 kg a 9kg",6,9,1.35,4.2,2.775],["SP",">9 kg a 12 kg",9,12,1.63,5.03,3.33],["SP",">12 kg a 15 kg",12,15,2.59,5.71,4.15],["SP",">15 kg a 18 kg",15,18,3.21,6.41,4.81],["SP",">18 kg a 21 kg",18,21,3.8,7.5,5.65],["SP",">21 kg a 24 kg",21,24,5.16,8.28,6.72],["SP",">24 kg a 27 kg",24,27,5.88,9.05,7.465],["SP",">27 kg a 30 kg",27,30,6.59,9.81,8.2],["CE","Até 3 kg",0,3,0.97,2.84,1.905],["CE",">3 kg a 6 kg",3,6,1.16,4.97,3.065],["CE",">6 kg a 9kg",6,9,1.41,5.82,3.615],["CE",">9 kg a 12 kg",9,12,1.71,7.55,4.63],["CE",">12 kg a 15 kg",12,15,2.72,8.85,5.785],["CE",">15 kg a 18 kg",15,18,3.37,17.7,10.535],["CE",">18 kg a 21 kg",18,21,3.99,20.5,12.245],["CE",">21 kg a 24 kg",21,24,5.42,23.3,14.36],["CE",">24 kg a 27 kg",24,27,6.18,26.1,16.14],["CE",">27 kg a 30 kg",27,30,6.92,29,17.96],["DF","Até 3 kg",0,3,2.16,3.36,2.76],["DF",">3 kg a 6 kg",3,6,2.56,5.88,4.22],["DF",">6 kg a 9kg",6,9,2.99,6.88,4.935],["DF",">9 kg a 12 kg",9,12,3.41,8.93,6.17],["DF",">12 kg a 15 kg",12,15,3.87,10.4,7.135],["DF",">15 kg a 18 kg",15,18,4.32,21,12.66],["DF",">18 kg a 21 kg",18,21,4.77,24.3,14.535],["DF",">21 kg a 24 kg",21,24,5.26,27.6,16.43],["DF",">24 kg a 27 kg",24,27,5.71,30.9,18.305],["DF",">27 kg a 30 kg",27,30,6.29,34.3,20.295],["MG","Até 3 kg",0,3,1.16,2.78,1.97],["MG",">3 kg a 6 kg",3,6,1.38,4.86,3.12],["MG",">6 kg a 9kg",6,9,1.68,5.68,3.68],["MG",">9 kg a 12 kg",9,12,2.03,7.38,4.705],["MG",">12 kg a 15 kg",12,15,3.23,8.65,5.94],["MG",">15 kg a 18 kg",15,18,4.01,17.3,10.655],["MG",">18 kg a 21 kg",18,21,4.75,20.1,12.425],["MG",">21 kg a 24 kg",21,24,6.46,22.8,14.63],["MG",">24 kg a 27 kg",24,27,7.36,25.6,16.48],["MG",">27 kg a 30 kg",27,30,8.24,28.3,18.27],["PE","Até 3 kg",0,3,1.18,2.83,2.005],["PE",">3 kg a 6 kg",3,6,1.4,4.96,3.18],["PE",">6 kg a 9kg",6,9,1.72,5.8,3.76],["PE",">9 kg a 12 kg",9,12,2.08,7.53,4.805],["PE",">12 kg a 15 kg",12,15,3.3,8.82,6.06],["PE",">15 kg a 18 kg",15,18,4.09,17.7,10.895],["PE",">18 kg a 21 kg",18,21,4.85,20.5,12.675],["PE",">21 kg a 24 kg",21,24,6.59,23.3,14.945],["PE",">24 kg a 27 kg",24,27,7.5,26.1,16.8],["PE",">27 kg a 30 kg",27,30,8.4,28.9,18.65],["PR","Até 3 kg",0,3,1.5,3.97,2.735],["PR",">3 kg a 6 kg",3,6,1.78,5.24,3.51],["PR",">6 kg a 9kg",6,9,2.18,5.74,3.96],["PR",">9 kg a 12 kg",9,12,2.64,6.9,4.77],["PR",">12 kg a 15 kg",12,15,4.19,7.86,6.025],["PR",">15 kg a 18 kg",15,18,5.2,8.86,7.03],["PR",">18 kg a 21 kg",18,21,6.16,10.4,8.28],["PR",">21 kg a 24 kg",21,24,8.37,11.5,9.935],["PR",">24 kg a 27 kg",24,27,9.53,12.6,11.065],["PR",">27 kg a 30 kg",27,30,10.6,13.7,12.15],["RJ","Até 3 kg",0,3,1.18,2.77,1.975],["RJ",">3 kg a 6 kg",3,6,1.64,4.66,3.15],["RJ",">6 kg a 9kg",6,9,1.76,5.88,3.82],["RJ",">9 kg a 12 kg",9,12,2.15,7.23,4.69],["RJ",">12 kg a 15 kg",12,15,4.11,14.95,9.53],["RJ",">15 kg a 18 kg",15,18,4.75,16.71,10.73],["RJ",">18 kg a 21 kg",18,21,5.75,19.89,12.82],["RJ",">21 kg a 24 kg",21,24,7.94,22.58,15.26],["RJ",">24 kg a 27 kg",24,27,9.17,27.81,18.49],["RJ",">27 kg a 30 kg",27,30,10.13,30.73,20.43],["RS (POA)","Até 3 kg",0,3,1.45,1.76,1.605],["RS (POA)",">3 kg a 6 kg",3,6,1.55,5.05,3.3],["RS (POA)",">6 kg a 9kg",6,9,1.74,6.41,4.075],["RS (POA)",">9 kg a 12 kg",9,12,2.18,7.75,4.965],["RS (POA)",">12 kg a 15 kg",12,15,3.52,9.09,6.305],["RS (POA)",">15 kg a 18 kg",15,18,4.75,18.22,11.485],["RS (POA)",">18 kg a 21 kg",18,21,5.25,21.11,13.18],["RS (POA)",">21 kg a 24 kg",21,24,7.1,24,15.55],["RS (POA)",">24 kg a 27 kg",24,27,8.05,26.88,17.465],["RS (POA)",">27 kg a 30 kg",27,30,8.96,29.77,19.365],["SC (POA)","Até 3 kg",0,3,2.49,3.06,2.775],["SC (POA)",">3 kg a 6 kg",3,6,3.1,5.36,4.23],["SC (POA)",">6 kg a 9kg",6,9,4.13,6.27,5.2],["SC (POA)",">9 kg a 12 kg",9,12,5.3,8.14,6.72],["SC (POA)",">12 kg a 15 kg",12,15,6.46,9.54,8],["SC (POA)",">15 kg a 18 kg",15,18,7.79,19.1,13.445],["SC (POA)",">18 kg a 21 kg",18,21,17.1,22.1,19.6],["SC (POA)",">21 kg a 24 kg",21,24,19.8,25.2,22.5],["SC (POA)",">24 kg a 27 kg",24,27,22.6,28.2,25.4],["SC (POA)",">27 kg a 30 kg",27,30,25.4,31.2,28.3]];
+    const COMISSOES = [["Comidas e bebidas",0.1,1,"Fixa"],["Eletrodomésticos de linha branca",0.11,1,"Fixa"],["Saúde e cuidados pessoais",0.12,1,"Fixa"],["Pneus e rodas",0.1,1,"Fixa"],["Indústria e Ciência",0.12,2,"Fixa"],["Produtos para bebês",0.12,1,"Fixa"],["Produtos para animais de estimação",0.12,1,"Fixa"],["Eletroportáteis de cuidado pessoal",0.12,1,"Fixa"],["Cozinha",0.12,1,"Fixa"],["Jardim e Piscina",0.12,1,"Fixa"],["Brinquedos e jogos",0.12,1,"Fixa"],["TV, áudio e cinema em casa",0.1,1,"Fixa"],["PC",0.12,1,"Fixa"],["Eletrônicos portáteis",0.13,1,"Fixa"],["Peças e acessórios automotivos",0.12,1,"Fixa"],["Casa",0.12,1,"Fixa"],["Beleza",0.13,1,"Fixa"],["Beleza de luxo",0.14,1,"Fixa"],["Celulares",0.11,1,"Fixa"],["Câmera e fotografia",0.11,1,"Fixa"],["Videogames e consoles",0.11,1,"Fixa"],["Esportes, aventura e lazer",0.12,1,"Fixa"],["Ferramentas e Construção",0.11,1,"Fixa"],["Papelaria e Escritório",0.13,1,"Fixa"],["Bagagem e acessórios de viagem",0.14,1,"Fixa"],["Roupas e acessórios",0.14,1,"Fixa"],["Calçados, bolsas e óculos escuros",0.14,1,"Fixa"],["Relógios",0.13,1,"Fixa"],["Joias",0.14,1,"Fixa"],["Livros",0.15,1,"Fixa"],["Acessórios para eletrônicos e para PC",0.15,2,"Escalonada"],["Móveis",0.15,2,"Escalonada"],["Vídeo e DVD",0.15,1,"Fixa"],["Música (CDs, LPs etc)",0.15,1,"Fixa"],["Instrumentos musicais e acessórios",0.12,1,"Fixa"],["Demais categorias",0.15,1,"Fixa"],["Manual / Outra categoria",0,0,"Manual"]];
+    const STORAGE_SMALL_M3 = 75;
+    const STORAGE_LARGE_M3 = 37.5;
+    const STORAGE_LONG_TERM_M3 = 525;
+    const PLAN_AMAZON_COST = 0;
+
+    const EXEMPLO = {
+      productName: "Tornozeleira de compressão",
+      category: "Esportes, aventura e lazer",
+      salePrice: "12,00",
+      purchaseCost: "5,50",
+      purchaseFreight: "0,00",
+      quantity: "300",
+      manualCommission: "",
+      lengthCm: "23,8",
+      widthCm: "10,6",
+      heightCm: "2",
+      weightG: "40",
+      daysFba: "30",
+      unitsPerBox: "300",
+      boxWeightKg: "12",
+      useCollection: "Sim",
+      collectionState: "SP",
+      manualLogisticsFee: "",
+      removalRate: "0",
+      taxRate: "4",
+      adsRate: "0",
+      promoRate: "0",
+      prepCenterCost: "0,25",
+      packagingCost: "2,00",
+      otherCosts: "0,00",
+      monthlyFixedCosts: "0,00",
+      targetMargin: "18",
+      minimumRoi: ""
+    };
+
+    const moneyFmt = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+    const pctFmt = new Intl.NumberFormat("pt-BR", { style: "percent", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const numFmt = new Intl.NumberFormat("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 6 });
+
+    function isFilledValue(value) {
+      return String(value || "").trim() !== "";
+    }
+
+    function parseMoney(value) {
+      const normalized = String(value || "").replace(/[R$\s]/g, "").replace(/\./g, "").replace(",", ".");
+      const number = Number.parseFloat(normalized);
+      return Number.isFinite(number) ? number : 0;
+    }
+
+    function parsePercent(value) {
+      const normalized = String(value || "").replace("%", "").replace(/\s/g, "").replace(",", ".");
+      const number = Number.parseFloat(normalized);
+      if (!Number.isFinite(number)) return 0;
+      return number > 1 ? number / 100 : number;
+    }
+
+    function getCommissionRow(category) {
+      return COMISSOES.find((row) => row[0] === category) || COMISSOES[COMISSOES.length - 1];
+    }
+
+    function getPriceBandIndex(price) {
+      if (price < 30) return 1;
+      if (price < 50) return 2;
+      if (price < 79) return 3;
+      if (price < 100) return 4;
+      if (price < 120) return 5;
+      if (price < 150) return 6;
+      if (price < 200) return 7;
+      return 8;
+    }
+
+    function calculateVolume(lengthCm, widthCm, heightCm) {
+      const cm3 = lengthCm * widthCm * heightCm;
+      return { cm3, m3: cm3 / 1000000 };
+    }
+
+    function calculateWeights(lengthCm, widthCm, heightCm, weightG) {
+      const dimensionalKg = lengthCm * widthCm * heightCm / 6000;
+      const realWithPackagingKg = weightG / 1000 + 0.02;
+      return {
+        dimensionalKg,
+        realWithPackagingKg,
+        billableKg: Math.max(dimensionalKg, realWithPackagingKg)
+      };
+    }
+
+    function calculateAmazonCommission(price, category, manualPercent, hasManual) {
+      const row = getCommissionRow(category);
+      const tablePercent = row[1];
+      const minimum = row[2];
+      const percent = hasManual ? manualPercent : tablePercent;
+      let value;
+
+      if (hasManual) {
+        value = Math.max(minimum, price * manualPercent);
+      } else if (category === "Acessorios para eletronicos e para PC" || category === "AcessÃ³rios para eletrÃ´nicos e para PC") {
+        value = Math.max(minimum, 0.15 * Math.min(price, 100) + 0.10 * Math.max(price - 100, 0));
+      } else if (category === "Moveis" || category === "MÃ³veis") {
+        value = Math.max(minimum, 0.15 * Math.min(price, 200) + 0.10 * Math.max(price - 200, 0));
+      } else {
+        value = Math.max(minimum, price * tablePercent);
+      }
+
+      return {
+        value,
+        effectivePercent: price > 0 ? value / price : 0,
+        percentUsed: percent,
+        minimum
+      };
+    }
+
+    function findApproxRowByMin(rows, weightKg, maxDataRows) {
+      let selected = null;
+      const usableRows = rows.slice(0, maxDataRows);
+      for (const row of usableRows) {
+        if (weightKg >= row[1]) selected = row;
+      }
+      return selected;
+    }
+
+    function calculateLogisticsFee(price, billableKg, manualFee, hasManual) {
+      if (hasManual) return { value: manualFee, status: "manual", alert: "" };
+      if (billableKg > 22) return { value: 0, status: "fora_limite", alert: "Peso acima do limite da tabela publica de logistica FBA." };
+
+      const band = getPriceBandIndex(price);
+      const valueIndex = 2 + band;
+
+      if (billableKg <= 10) {
+        const row = findApproxRowByMin(TARIFAS_LOGISTICA, billableKg, 17);
+        const value = row ? row[valueIndex] : null;
+        if (typeof value !== "number") return { value: 0, status: "manual_required", alert: "Combinacao de peso/preco sem tarifa logistica automatica. Informe a tarifa manual." };
+        return { value, status: "auto", alert: "" };
+      }
+
+      const baseRow = TARIFAS_LOGISTICA[16];
+      const additionalRow = TARIFAS_LOGISTICA[17];
+      const base = baseRow[valueIndex];
+      const additional = additionalRow[valueIndex];
+      if (typeof base !== "number" || typeof additional !== "number") {
+        return { value: 0, status: "manual_required", alert: "Tarifa acima de 10 kg indisponivel para esta faixa de preco. Informe a tarifa manual." };
+      }
+      return { value: base + Math.ceil(billableKg - 10) * additional, status: "auto", alert: "" };
+    }
+
+    function calculateStorage(volumeCm3, volumeM3, daysFba) {
+      const monthlyRate = volumeCm3 < 10000 ? STORAGE_SMALL_M3 : STORAGE_LARGE_M3;
+      return {
+        monthly: volumeM3 * monthlyRate * (daysFba / 30),
+        longTerm: daysFba > 365 ? volumeM3 * STORAGE_LONG_TERM_M3 : 0
+      };
+    }
+
+    function calculateCollection(useCollection, state, boxWeightKg, unitsPerBox) {
+      if (useCollection !== "Sim") return { value: 0, alert: "" };
+      if (unitsPerBox <= 0) return { value: 0, alert: "Unidades por caixa precisa ser maior que zero para ratear a coleta FBA." };
+
+      const row = COLETA_FBA.find((item) => item[0] === state && item[2] < boxWeightKg && item[3] >= boxWeightKg);
+      if (!row) return { value: 0, alert: "Nao foi encontrada faixa de coleta FBA para o estado/peso da caixa." };
+      return { value: row[6] / unitsPerBox, alert: "" };
+    }
+
+    function calculateRemovalFee(billableKg) {
+      if (billableKg <= 10) {
+        const row = findApproxRowByMin(TARIFAS_REMOCAO, billableKg, 12);
+        return row ? row[3] : 0;
+      }
+      return TARIFAS_REMOCAO[11][3] + Math.ceil(billableKg - 10) * TARIFAS_REMOCAO[12][3];
+    }
+
+    function calculateMinimumPrice(fixedCosts, commissionPercent, taxRate, adsRate, promoRate, commissionMinimum) {
+      const percent = commissionPercent + taxRate + adsRate + promoRate;
+      if (percent >= 1) return { value: null, alert: "Percentuais sobre venda atingem ou superam 100%." };
+      let price = fixedCosts / (1 - percent);
+      if (price * commissionPercent < commissionMinimum) {
+        const withoutCommission = taxRate + adsRate + promoRate;
+        if (withoutCommission >= 1) return { value: null, alert: "Percentuais sem comissao atingem ou superam 100%." };
+        price = (fixedCosts + commissionMinimum) / (1 - withoutCommission);
+      }
+      return { value: price, alert: "" };
+    }
+
+    function calculateSuggestedPrice(fixedCosts, effectiveCommission, taxRate, adsRate, promoRate, targetMargin) {
+      const denominator = 1 - effectiveCommission - taxRate - adsRate - promoRate - targetMargin;
+      if (denominator <= 0) return { value: null, alert: "Margem alvo inviavel: percentuais sobre venda somados a margem atingem ou superam 100%." };
+      return { value: fixedCosts / denominator, alert: "" };
+    }
+
+    function calculateInvestmentRecovery(quantity, purchaseCost, netProfit) {
+      const investment = quantity * purchaseCost;
+      if (quantity <= 0 || purchaseCost <= 0) return { text: "Nao informado", value: null, investment, status: "warn" };
+      if (netProfit <= 0) return { text: "Inviavel", value: null, investment, status: "bad" };
+      const units = Math.ceil(investment / netProfit);
+      return { text: `${units} unidade(s)`, value: units, investment, status: "good" };
+    }
+
+    function calculateProductResult(data) {
+      const volume = calculateVolume(data.lengthCm, data.widthCm, data.heightCm);
+      const weights = calculateWeights(data.lengthCm, data.widthCm, data.heightCm, data.weightG);
+      const commission = calculateAmazonCommission(data.salePrice, data.category, data.manualCommission, data.hasManualCommission);
+      const logistics = calculateLogisticsFee(data.salePrice, weights.billableKg, data.manualLogisticsFee, data.hasManualLogisticsFee);
+      const storage = calculateStorage(volume.cm3, volume.m3, data.daysFba);
+      const collection = calculateCollection(data.useCollection, data.collectionState, data.boxWeightKg, data.unitsPerBox);
+      const removalUnit = calculateRemovalFee(weights.billableKg);
+      const expectedRemoval = removalUnit * data.removalRate;
+      const taxValue = data.salePrice * data.taxRate;
+      const adsValue = data.salePrice * data.adsRate;
+      const promoValue = data.salePrice * data.promoRate;
+      const extraCosts = data.prepCenter + data.packaging + data.otherCosts;
+      const fixedForSuggested = data.purchaseCost + data.purchaseFreight + logistics.value + storage.monthly + storage.longTerm + collection.value + expectedRemoval + extraCosts + PLAN_AMAZON_COST;
+      const totalCost = fixedForSuggested + commission.value + taxValue + adsValue + promoValue;
+      const netProfit = data.salePrice - totalCost;
+      const netMargin = data.salePrice > 0 ? netProfit / data.salePrice : 0;
+      const roi = data.purchaseCost > 0 ? netProfit / data.purchaseCost : 0;
+      const totalRevenue = data.salePrice * data.quantity;
+      const stockInvestment = data.purchaseCost * data.quantity;
+      const projectedProfit = netProfit * data.quantity;
+      const minimumPrice = calculateMinimumPrice(fixedForSuggested, commission.effectivePercent, data.taxRate, data.adsRate, data.promoRate, commission.minimum);
+      const suggestedPrice = calculateSuggestedPrice(fixedForSuggested, commission.effectivePercent, data.taxRate, data.adsRate, data.promoRate, data.targetMargin);
+      const investmentRecovery = calculateInvestmentRecovery(data.quantity, data.purchaseCost, netProfit);
+
+      const alerts = [];
+      if (logistics.alert) alerts.push({ type: "bad", text: logistics.alert });
+      if (collection.alert) alerts.push({ type: "bad", text: collection.alert });
+      if (minimumPrice.alert) alerts.push({ type: "bad", text: minimumPrice.alert });
+      if (suggestedPrice.alert) alerts.push({ type: "bad", text: suggestedPrice.alert });
+      if (netProfit <= 0) alerts.push({ type: "bad", text: "Lucro liquido por unidade negativo ou zero." });
+      if (netMargin < data.targetMargin) alerts.push({ type: "bad", text: "Margem liquida menor que a margem desejada." });
+      if (data.minimumRoiFilled && roi < data.minimumRoi) alerts.push({ type: "bad", text: "ROI menor que o ROI minimo informado." });
+      if (netMargin < 0.15) alerts.push({ type: "warn", text: "Margem liquida inferior a 15%, limite de atencao herdado da planilha." });
+      if (minimumPrice.value !== null && data.salePrice < minimumPrice.value) alerts.push({ type: "bad", text: "Preco de venda menor que o preco minimo." });
+      if (suggestedPrice.value !== null && data.salePrice > 0 && suggestedPrice.value > data.salePrice * 1.5) alerts.push({ type: "warn", text: "Preco sugerido muito acima do preco informado." });
+      if (investmentRecovery.value !== null && data.quantity > 0 && investmentRecovery.value > data.quantity) alerts.push({ type: "warn", text: "Unidades para recuperar investimento maiores que a quantidade comprada." });
+      if (data.purchaseCost === 0) alerts.push({ type: "warn", text: "ROI retornou 0 porque o custo de compra e zero." });
+      if (data.lengthCm > 105 || data.widthCm > 105 || data.heightCm > 105 || data.lengthCm + data.widthCm + data.heightCm > 200) alerts.push({ type: "warn", text: "Verificar dimensoes maximas FBA." });
+
+      let status = "APROVADO";
+      if (logistics.status === "fora_limite" || logistics.status === "manual_required") {
+        status = "REVISAR TARIFA FBA";
+      } else if (netMargin >= data.targetMargin) {
+        status = "APROVADO";
+      } else if (netMargin >= 0.15) {
+        status = "REVISAR";
+      } else {
+        status = "REPROVADO";
+      }
+
+      if (alerts.length === 0) alerts.push({ type: "good", text: "OK" });
+
+      return {
+        volume,
+        weights,
+        priceBand: getPriceBandIndex(data.salePrice),
+        commission,
+        logistics,
+        storage,
+        collection,
+        removalUnit,
+        expectedRemoval,
+        taxValue,
+        adsValue,
+        promoValue,
+        extraCosts,
+        totalCost,
+        netProfit,
+        netMargin,
+        roi,
+        totalRevenue,
+        stockInvestment,
+        projectedProfit,
+        minimumPrice,
+        suggestedPrice,
+        investmentRecovery,
+        status,
+        alerts
+      };
+    }
+
+    function calculateGlobalTotals(items, monthlyFixedCosts) {
+      const totalRevenue = items.reduce((sum, item) => sum + item.result.totalRevenue, 0);
+      const stockInvestment = items.reduce((sum, item) => sum + item.result.stockInvestment, 0);
+      const projectedProfit = items.reduce((sum, item) => sum + item.result.projectedProfit, 0);
+      const quantityTotal = items.reduce((sum, item) => sum + item.data.quantity, 0);
+      const profitAfterFixed = projectedProfit - monthlyFixedCosts;
+      const weightedProfit = quantityTotal > 0 ? projectedProfit / quantityTotal : 0;
+      let breakEven = { text: "Não aplicável", value: null, status: "warn" };
+
+      if (monthlyFixedCosts > 0 && weightedProfit <= 0) {
+        breakEven = { text: "Inviável", value: null, status: "bad" };
+      } else if (monthlyFixedCosts > 0) {
+        const units = Math.ceil(monthlyFixedCosts / weightedProfit);
+        breakEven = { text: `${units} unidade(s)`, value: units, status: "good" };
+      }
+
+      const decisions = items.map((item) => decisionForResult(item.result));
+      const hasReproved = decisions.some((decision) => decision.label === "REPROVADO") || profitAfterFixed < 0;
+      const hasAttention = decisions.some((decision) => decision.label === "ATENÇÃO") || breakEven.status === "bad";
+      const status = hasReproved
+        ? { label: "REPROVADO", className: "bad" }
+        : hasAttention
+          ? { label: "ATENÇÃO", className: "warn" }
+          : { label: "APROVADO", className: "good" };
+
+      return {
+        totalRevenue,
+        stockInvestment,
+        projectedProfit,
+        monthlyFixedCosts,
+        profitAfterFixed,
+        quantityTotal,
+        weightedProfit,
+        breakEven,
+        skuCount: items.length,
+        status
+      };
+    }
+
+    const PRODUCT_FIELDS = [
+      "productName", "category", "salePrice", "purchaseCost", "purchaseFreight", "quantity", "manualCommission",
+      "lengthCm", "widthCm", "heightCm", "weightG", "daysFba", "unitsPerBox", "boxWeightKg", "useCollection",
+      "collectionState", "manualLogisticsFee", "removalRate", "taxRate", "adsRate", "promoRate", "prepCenterCost",
+      "packagingCost", "otherCosts", "targetMargin", "minimumRoi"
+    ];
+
+    const EMPTY_PRODUCT = {
+      productName: "",
+      category: COMISSOES[0][0],
+      salePrice: "",
+      purchaseCost: "",
+      purchaseFreight: "",
+      quantity: "",
+      manualCommission: "",
+      lengthCm: "",
+      widthCm: "",
+      heightCm: "",
+      weightG: "",
+      daysFba: "30",
+      unitsPerBox: "",
+      boxWeightKg: "",
+      useCollection: "Sim",
+      collectionState: COLETA_FBA[0][0],
+      manualLogisticsFee: "",
+      removalRate: "0",
+      taxRate: "",
+      adsRate: "0",
+      promoRate: "0",
+      prepCenterCost: "",
+      packagingCost: "",
+      otherCosts: "0",
+      targetMargin: "",
+      minimumRoi: ""
+    };
+
+    let products = [];
+    let nextProductId = 1;
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function createProduct(values = {}) {
+      return { id: nextProductId++, values: { ...EMPTY_PRODUCT, ...values } };
+    }
+
+    function getProductLabel(product, index) {
+      const name = product.values.productName && product.values.productName.trim();
+      return name || `Produto ${index + 1}`;
+    }
+
+    function optionList(rows, selectedValue) {
+      return rows
+        .map((row) => {
+          const value = row[0];
+          const selected = value === selectedValue ? " selected" : "";
+          return `<option value="${escapeHtml(value)}"${selected}>${escapeHtml(value)}</option>`;
+        })
+        .join("");
+    }
+
+    function collectionStateOptions(selectedValue) {
+      const states = [...new Set(COLETA_FBA.map((row) => row[0]))];
+      return states
+        .map((state) => `<option value="${escapeHtml(state)}"${state === selectedValue ? " selected" : ""}>${escapeHtml(state)}</option>`)
+        .join("");
+    }
+
+    function inputField(field, label, value, inputmode = "decimal", hint = "") {
+      return `
+              <div class="field">
+                <label>${label}</label>
+                <input data-field="${field}" type="text" inputmode="${inputmode}" value="${escapeHtml(value)}">
+                ${hint ? `<span class="hint">${hint}</span>` : ""}
+              </div>`;
+    }
+
+    function renderProductForms() {
+      const container = document.getElementById("productsContainer");
+      container.innerHTML = products.map((product, index) => {
+        const values = product.values;
+        const data = readProductData(product);
+        const result = calculateProductResult(data);
+        return `
+          <div class="product-block" data-product-id="${product.id}">
+            <div class="product-title">
+              <h3>${escapeHtml(getProductLabel(product, index))}</h3>
+              <button class="remove-product" type="button" data-remove-product="${product.id}"${products.length === 1 ? " disabled" : ""}>Remover produto</button>
+            </div>
+
+            <div class="form-block">
+              <h3>Dados comerciais do produto</h3>
+              <div class="grid">
+                <div class="field full">
+                  <label>Nome do produto</label>
+                  <input data-field="productName" type="text" value="${escapeHtml(values.productName)}">
+                </div>
+                <div class="field full">
+                  <label>Categoria</label>
+                  <select data-field="category">${optionList(COMISSOES, values.category)}</select>
+                </div>
+                ${inputField("salePrice", "Preço de venda unitário", values.salePrice)}
+                ${inputField("purchaseCost", "Preço de compra unitário", values.purchaseCost)}
+                ${inputField("purchaseFreight", "Frete de compra", values.purchaseFreight)}
+                ${inputField("quantity", "Quantidade comprada", values.quantity, "numeric")}
+                ${inputField("manualCommission", "Comissão manual opcional (%)", values.manualCommission, "decimal", "Se ficar em branco, usa a comissão da categoria.")}
+              </div>
+            </div>
+
+            <div class="form-block">
+              <h3>Dimensões e peso</h3>
+              <div class="grid">
+                ${inputField("lengthCm", "Comprimento unitário (cm)", values.lengthCm)}
+                ${inputField("widthCm", "Largura unitária (cm)", values.widthCm)}
+                ${inputField("heightCm", "Altura unitária (cm)", values.heightCm)}
+                ${inputField("weightG", "Peso real unitário (g)", values.weightG)}
+              </div>
+            </div>
+
+            <div class="form-block">
+              <h3>Logística FBA</h3>
+              <div class="grid">
+                ${inputField("daysFba", "Dias médios no FBA", values.daysFba, "numeric")}
+                ${inputField("unitsPerBox", "Unidades por caixa", values.unitsPerBox, "numeric")}
+                ${inputField("boxWeightKg", "Peso da caixa enviada (kg)", values.boxWeightKg)}
+                <div class="field">
+                  <label>Usar coleta FBA?</label>
+                  <select data-field="useCollection">
+                    <option value="Sim"${values.useCollection === "Sim" ? " selected" : ""}>Sim</option>
+                    <option value="Não"${values.useCollection === "Não" ? " selected" : ""}>Não</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Estado origem da coleta</label>
+                  <select data-field="collectionState">${collectionStateOptions(values.collectionState)}</select>
+                </div>
+                ${inputField("manualLogisticsFee", "Tarifa logística manual opcional", values.manualLogisticsFee)}
+                ${inputField("removalRate", "Remoção estimada (% do estoque)", values.removalRate)}
+              </div>
+            </div>
+
+            <div class="form-block">
+              <h3>Custos adicionais e metas</h3>
+              <div class="grid">
+                ${inputField("taxRate", "Imposto sobre venda (%)", values.taxRate)}
+                ${inputField("adsRate", "Ads/ACOS estimado (%)", values.adsRate)}
+                ${inputField("promoRate", "Parcelamento/promos (%)", values.promoRate)}
+                ${inputField("prepCenterCost", "Prep center por unidade", values.prepCenterCost)}
+                ${inputField("packagingCost", "Embalagem/etiqueta por unidade", values.packagingCost)}
+                ${inputField("otherCosts", "Outros custos por unidade", values.otherCosts)}
+                ${inputField("targetMargin", "Margem líquida alvo (%)", values.targetMargin)}
+                ${inputField("minimumRoi", "ROI mínimo desejado (%)", values.minimumRoi)}
+              </div>
+            </div>
+            ${renderProductResult(data, result, index)}
+          </div>`;
+      }).join("");
+    }
+
+    function readProductValuesFromBlock(block) {
+      const values = {};
+      PRODUCT_FIELDS.forEach((field) => {
+        const input = block.querySelector(`[data-field="${field}"]`);
+        values[field] = input ? input.value : EMPTY_PRODUCT[field];
+      });
+      return values;
+    }
+
+    function captureProductValues() {
+      document.querySelectorAll(".product-block").forEach((block) => {
+        const id = Number(block.dataset.productId);
+        const product = products.find((item) => item.id === id);
+        if (product) product.values = readProductValuesFromBlock(block);
+      });
+    }
+
+    function readProductData(product, block) {
+      const values = block ? readProductValuesFromBlock(block) : product.values;
+      const unitsPerBox = Math.max(0, Math.round(parseMoney(values.unitsPerBox)));
+      const weightG = parseMoney(values.weightG);
+      const boxWeightFilled = isFilledValue(values.boxWeightKg);
+      const calculatedBoxWeight = (weightG / 1000) * unitsPerBox;
+
+      return {
+        id: product.id,
+        productName: String(values.productName || "").trim(),
+        category: values.category,
+        salePrice: parseMoney(values.salePrice),
+        purchaseCost: parseMoney(values.purchaseCost),
+        purchaseFreight: parseMoney(values.purchaseFreight),
+        quantity: Math.max(0, Math.round(parseMoney(values.quantity))),
+        manualCommission: parsePercent(values.manualCommission),
+        hasManualCommission: isFilledValue(values.manualCommission),
+        lengthCm: parseMoney(values.lengthCm),
+        widthCm: parseMoney(values.widthCm),
+        heightCm: parseMoney(values.heightCm),
+        weightG,
+        daysFba: parseMoney(values.daysFba),
+        unitsPerBox,
+        boxWeightKg: boxWeightFilled ? parseMoney(values.boxWeightKg) : calculatedBoxWeight,
+        useCollection: values.useCollection,
+        collectionState: values.collectionState,
+        manualLogisticsFee: parseMoney(values.manualLogisticsFee),
+        hasManualLogisticsFee: isFilledValue(values.manualLogisticsFee),
+        removalRate: parsePercent(values.removalRate),
+        taxRate: parsePercent(values.taxRate),
+        adsRate: parsePercent(values.adsRate),
+        promoRate: parsePercent(values.promoRate),
+        prepCenter: parseMoney(values.prepCenterCost),
+        packaging: parseMoney(values.packagingCost),
+        otherCosts: parseMoney(values.otherCosts),
+        targetMargin: parsePercent(values.targetMargin),
+        minimumRoi: parsePercent(values.minimumRoi),
+        minimumRoiFilled: isFilledValue(values.minimumRoi)
+      };
+    }
+
+    function readAllProducts() {
+      return products.map((product) => {
+        const block = document.querySelector(`[data-product-id="${product.id}"]`);
+        return readProductData(product, block);
+      });
+    }
+
+    function setValue(id, text, className) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = text;
+      el.classList.remove("good", "warn", "bad");
+      if (className) el.classList.add(className);
+    }
+
+    function classByNumber(value) {
+      if (value < 0) return "bad";
+      return "good";
+    }
+
+    function moneyOrText(result) {
+      return result.value === null ? "Inviável" : moneyFmt.format(result.value);
+    }
+
+    function card(label, value, className = "good") {
+      return `<div class="card"><strong>${label}</strong><div class="value ${className}">${value}</div></div>`;
+    }
+
+    function decisionForResult(result) {
+      if (result.status === "APROVADO") {
+        return {
+          label: "APROVADO",
+          className: "good",
+          text: "Produto dentro dos critérios de margem e ROI informados."
+        };
+      }
+
+      if (result.status === "REPROVADO") {
+        return {
+          label: "REPROVADO",
+          className: "bad",
+          text: "Produto não atende aos critérios mínimos de viabilidade."
+        };
+      }
+
+      return {
+        label: "ATENÇÃO",
+        className: "warn",
+        text: "Produto exige revisão de margem, ROI, tarifa FBA ou recuperação do investimento."
+      };
+    }
+
+    function renderProductResult(data, result, index) {
+      const title = data.productName || `Produto ${index + 1}`;
+      const decision = decisionForResult(result);
+      return `
+            <div class="product-result">
+              <h3>Resultado do produto</h3>
+              <p class="result-note">${escapeHtml(title)}</p>
+              <div class="featured-results">
+                <div class="featured-metric">
+                  <span>Custo total unitário</span>
+                  <strong class="${classByNumber(result.totalCost)}">${moneyFmt.format(result.totalCost)}</strong>
+                </div>
+                <div class="featured-metric">
+                  <span>Preço sugerido para margem alvo</span>
+                  <strong class="${result.suggestedPrice.value === null ? "bad" : "good"}">${moneyOrText(result.suggestedPrice)}</strong>
+                </div>
+              </div>
+              <div class="cards">
+                ${card("Lucro líquido unitário", moneyFmt.format(result.netProfit), classByNumber(result.netProfit))}
+                ${card("Margem líquida", pctFmt.format(result.netMargin), result.netMargin >= data.targetMargin ? "good" : "bad")}
+                ${card("ROI", pctFmt.format(result.roi), data.minimumRoiFilled && result.roi < data.minimumRoi ? "bad" : "good")}
+                ${card("Preço mínimo de venda", moneyOrText(result.minimumPrice), result.minimumPrice.value === null ? "bad" : "good")}
+                ${card("Faturamento projetado", moneyFmt.format(result.totalRevenue))}
+                ${card("Investimento em estoque", moneyFmt.format(result.stockInvestment))}
+                ${card("Lucro total projetado", moneyFmt.format(result.projectedProfit), classByNumber(result.projectedProfit))}
+                ${card("Recuperação do investimento", result.investmentRecovery.text, result.investmentRecovery.status)}
+                <div class="card status"><strong>Status do produto</strong><div class="value ${decision.className}">${decision.label}</div></div>
+              </div>
+              <div class="decision">
+                <span class="decision-label">Interpretação</span>
+                <strong class="${decision.className}">${decision.label}</strong>
+                <p>${decision.text}</p>
+              </div>
+              <div class="alerts">
+                ${result.alerts.map((alert) => `<div class="alert ${alert.type}">${escapeHtml(alert.text)}</div>`).join("")}
+              </div>
+            </div>`;
+    }
+
+    function renderGlobalSummary(global) {
+      setValue("globalRevenue", moneyFmt.format(global.totalRevenue), "good");
+      setValue("globalStockInvestment", moneyFmt.format(global.stockInvestment), "good");
+      setValue("globalProjectedProfit", moneyFmt.format(global.projectedProfit), classByNumber(global.projectedProfit));
+      setValue("globalFixedCosts", moneyFmt.format(global.monthlyFixedCosts), "good");
+      setValue("globalProfitAfterFixed", moneyFmt.format(global.profitAfterFixed), classByNumber(global.profitAfterFixed));
+      setValue("globalBreakEven", global.breakEven.text, global.breakEven.status);
+      setValue("globalQuantityTotal", `${global.quantityTotal} unidade(s)`, "good");
+      setValue("globalSkuCount", `${global.skuCount} SKU(s)`, "good");
+      setValue("globalStatus", global.status.label, global.status.className);
+      setValue("overallStatus", `Status geral: ${global.status.label}`, global.status.className);
+    }
+
+    function renderIndividualResults(items) {
+      document.getElementById("individualResults").innerHTML = "";
+    }
+
+    function renderInlineProductResults(items) {
+      items.forEach((item, index) => {
+        const block = document.querySelector(`[data-product-id="${item.data.id}"]`);
+        const currentResult = block ? block.querySelector(".product-result") : null;
+        if (currentResult) currentResult.outerHTML = renderProductResult(item.data, item.result, index);
+      });
+    }
+
+    function calculateAndRender(event) {
+      if (event) event.preventDefault();
+      const dataItems = readAllProducts();
+      const items = dataItems.map((data) => ({ data, result: calculateProductResult(data) }));
+      const monthlyFixedCosts = parseMoney(document.getElementById("monthlyFixedCosts").value);
+      const global = calculateGlobalTotals(items, monthlyFixedCosts);
+
+      renderInlineProductResults(items);
+      renderGlobalSummary(global);
+      renderIndividualResults(items);
+      document.getElementById("summary").textContent = [
+        `Produtos na simulacao: ${items.length}.`,
+        `Quantidade total informada: ${global.quantityTotal} unidade(s).`,
+        `Lucro medio ponderado por unidade: ${moneyFmt.format(global.weightedProfit)}.`,
+        `Custo do plano Amazon considerado por unidade: ${moneyFmt.format(PLAN_AMAZON_COST)}.`
+      ].join(" ");
+    }
+
+    function addProduct() {
+      captureProductValues();
+      products.push(createProduct());
+      renderProductForms();
+      calculateAndRender();
+    }
+
+    function removeProduct(id) {
+      if (products.length <= 1) return;
+      captureProductValues();
+      products = products.filter((product) => product.id !== id);
+      renderProductForms();
+      calculateAndRender();
+    }
+
+    function applyExample() {
+      nextProductId = 1;
+      products = [createProduct(EXEMPLO)];
+      document.getElementById("monthlyFixedCosts").value = EXEMPLO.monthlyFixedCosts || "0,00";
+      renderProductForms();
+      calculateAndRender();
+    }
+
+    document.getElementById("calculatorForm").addEventListener("submit", calculateAndRender);
+    document.getElementById("addProductButton").addEventListener("click", addProduct);
+    document.getElementById("headerAddProductButton").addEventListener("click", addProduct);
+    document.getElementById("headerCalculateButton").addEventListener("click", calculateAndRender);
+    document.getElementById("resetButton").addEventListener("click", applyExample);
+    document.getElementById("monthlyFixedCosts").addEventListener("input", calculateAndRender);
+    document.getElementById("productsContainer").addEventListener("input", calculateAndRender);
+    document.getElementById("productsContainer").addEventListener("change", calculateAndRender);
+    document.getElementById("productsContainer").addEventListener("click", (event) => {
+      const button = event.target.closest("[data-remove-product]");
+      if (!button) return;
+      removeProduct(Number(button.dataset.removeProduct));
+    });
+
+    applyExample();
+  </script>
+</body>
+</html>
